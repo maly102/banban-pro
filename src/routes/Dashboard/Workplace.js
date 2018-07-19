@@ -161,18 +161,15 @@ export default class Workplace extends PureComponent {
     const extraContent = (
       <div className={styles.extraContent}>
         <div className={styles.statItem}>
-          <p>项目数</p>
+          <p>待审核关系</p>
+          <p>22</p>
+        </div>
+        <div className={styles.statItem}>
+          <p>完成审核数</p>
           <p>56</p>
         </div>
         <div className={styles.statItem}>
-          <p>团队内排名</p>
-          <p>
-            8
-            <span> / 24</span>
-          </p>
-        </div>
-        <div className={styles.statItem}>
-          <p>项目访问</p>
+          <p>完成发布数</p>
           <p>2,223</p>
         </div>
       </div>

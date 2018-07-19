@@ -74,12 +74,12 @@ export const getRouterData = app => {
     '/': {
       component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
     },
-    '/dashboard/analysis': {
+    /* '/dashboard/analysis': {
       component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
     },
     '/dashboard/monitor': {
       component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
-    },
+    }, */
     '/dashboard/workplace': {
       component: dynamicWrapper(app, ['project', 'activities', 'chart'], () =>
         import('../routes/Dashboard/Workplace')
@@ -88,6 +88,27 @@ export const getRouterData = app => {
       // name: '工作台',
       // authority: 'admin',
     },
+
+    '/publish/publishList': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishList')),
+    },
+    '/publish/giveHand': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/GiveHand')),
+    },
+    '/publish/accepted': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/Accepted')),
+    },
+
+    '/system/userList': {
+      component: dynamicWrapper(app, [], () => import('../routes/System/UserList')),
+    },
+    '/system/checkList': {
+      component: dynamicWrapper(app, [], () => import('../routes/System/CheckList')),
+    },
+    '/system/rejectList': {
+      component: dynamicWrapper(app, [], () => import('../routes/System/RejectList')),
+    },
+
     '/form/basic-form': {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
     },

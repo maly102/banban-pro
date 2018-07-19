@@ -6,22 +6,61 @@ const menuData = [
     icon: 'dashboard',
     path: 'dashboard',
     children: [
-      {
+      /* {
         name: '分析页',
         path: 'analysis',
       },
       {
         name: '监控页',
         path: 'monitor',
-      },
+      }, */
       {
-        name: '工作台',
+        name: '首页',
         path: 'workplace',
-        // hideInBreadcrumb: true,
-        // hideInMenu: true,
       },
     ],
   },
+
+  {
+    name: '发布管理',
+    icon: 'pushpin-o',
+    path: 'publish',
+    children: [
+      {
+        name: '发布列表',
+        path: 'publishList',
+      },
+      {
+        name: '助人列表',
+        path: 'giveHand',
+      },
+      {
+        name: '被帮助列表',
+        path: 'accepted',
+      },
+    ],
+  },
+
+  {
+    name: '用户管理',
+    icon: 'user',
+    path: 'system',
+    children: [
+      {
+        name: '用户列表',
+        path: 'userList',
+      },
+      {
+        name: '审核列表',
+        path: 'checkList',
+      },
+      {
+        name: '拒绝列表',
+        path: 'rejectList',
+      },
+    ],
+  },
+
   {
     name: '表单页',
     icon: 'form',
