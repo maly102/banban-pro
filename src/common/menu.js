@@ -62,6 +62,30 @@ const menuData = [
   },
 
   {
+    name: '校园管理',
+    icon: 'team',
+    path: 'school',
+    children: [
+      {
+        name: '校园列表',
+        path: 'schoolList',
+      },
+    ],
+  },
+
+  {
+    name: '推广管理',
+    icon: 'share-alt',
+    path: 'promotion',
+    children: [
+      {
+        name: 'banner管理',
+        path: 'banner',
+      },
+    ],
+  },
+
+  {
     name: '表单页',
     icon: 'form',
     path: 'form',

@@ -108,6 +108,9 @@ export const getRouterData = app => {
     '/system/rejectList': {
       component: dynamicWrapper(app, [], () => import('../routes/System/RejectList')),
     },
+    '/school/schoolList': {
+      component: dynamicWrapper(app, [], () => import('../routes/School/SchoolList')),
+    },
 
     '/form/basic-form': {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
