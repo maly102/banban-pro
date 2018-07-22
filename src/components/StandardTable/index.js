@@ -1,6 +1,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Table, Alert } from 'antd';
 import styles from './index.less';
+import Constanst from '../../utils/config';
 
 function initTotalList(columns) {
   const totalList = [];
@@ -71,47 +72,58 @@ class StandardTable extends PureComponent {
       loading,
       columns,
       rowKey,
+      showSelection,
     } = this.props;
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
+      pageSize: Constanst.pageSize,
       ...pagination,
     };
 
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.handleRowSelectChange,
-      getCheckboxProps: record => ({
-        disabled: record.disabled,
-      }),
-    };
+    const rowSelection =
+      showSelection !== 'none'
+        ? {
+            selectedRowKeys,
+            onChange: this.handleRowSelectChange,
+            getCheckboxProps: record => ({
+              disabled: record.disabled,
+            }),
+          }
+        : null;
+
+    const rowSelectEl = rowSelection ? (
+      <div className={styles.tableAlert}>
+        <Alert
+          message={
+            <Fragment>
+              已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
+              {needTotalList.map(item => (
+                <span style={{ marginLeft: 8 }} key={item.dataIndex}>
+                  {item.title}
+                  总计&nbsp;
+                  <span style={{ fontWeight: 600 }}>
+                    {item.render ? item.render(item.total) : item.total}
+                  </span>
+                </span>
+              ))}
+              <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
+                清空
+              </a>
+            </Fragment>
+          }
+          type="info"
+          showIcon
+        />
+      </div>
+    ) : (
+      undefined
+    );
 
     return (
       <div className={styles.standardTable}>
-        <div className={styles.tableAlert}>
-          <Alert
-            message={
-              <Fragment>
-                已选择 <a style={{ fontWeight: 600 }}>{selectedRowKeys.length}</a> 项&nbsp;&nbsp;
-                {needTotalList.map(item => (
-                  <span style={{ marginLeft: 8 }} key={item.dataIndex}>
-                    {item.title}
-                    总计&nbsp;
-                    <span style={{ fontWeight: 600 }}>
-                      {item.render ? item.render(item.total) : item.total}
-                    </span>
-                  </span>
-                ))}
-                <a onClick={this.cleanSelectedKeys} style={{ marginLeft: 24 }}>
-                  清空
-                </a>
-              </Fragment>
-            }
-            type="info"
-            showIcon
-          />
-        </div>
+        {rowSelectEl}
         <Table
           loading={loading}
           rowKey={rowKey || 'key'}

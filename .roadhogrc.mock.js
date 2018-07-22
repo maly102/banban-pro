@@ -6,6 +6,7 @@ import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
+import { getFakePublishList } from './mock/publish';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -73,7 +74,7 @@ const proxy = {
   'GET /api/profile/advanced': getProfileAdvancedData,
   'POST /api/login/account': (req, res) => {
     const { password, userName, type } = req.body;
-    console.log(req.body)
+    console.log(req.body);
     if (password === '888888' && userName === 'admin') {
       res.send({
         status: 'ok',
@@ -136,6 +137,8 @@ const proxy = {
       path: '/base/category/list',
     });
   },
+
+  'POST /api/publish/list': getFakePublishList,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));
