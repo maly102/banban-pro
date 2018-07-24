@@ -4,8 +4,46 @@ import { Link } from 'dva/router';
 import { Checkbox, Alert, Icon } from 'antd';
 import Login from 'components/Login';
 import styles from './Login.less';
+import '../../protobuf/taskinfo_pb';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
+
+var test = new proto.taskinfopackage.TaskinfoMessage();
+test.setTaskfiled('12312');
+var str = test.serializeBinary();
+
+var data = proto.taskinfopackage.TaskinfoMessage.deserializeBinary(str);
+console.log(data.getTaskfiled())
+
+/*ProtoBuf.load(require('../../protobuf/taskinfo.proto')).then((root) => {
+  // Obtain a message type
+  var TaskinfoMessage = root.lookupType("taskinfopackage.TaskinfoMessage");
+  console.log(TaskinfoMessage)
+
+  // Exemplary payload
+  var payload = { taskFiled: "中国" };
+
+  // Verify the payload if necessary (i.e. when possibly incomplete or invalid)
+  var errMsg = TaskinfoMessage.verify(payload);
+  if (errMsg)
+    throw Error(errMsg);
+
+  // Create a new message
+  var message = TaskinfoMessage.create(payload); // or use .fromObject if conversion is necessary
+
+  // Encode a message to an Uint8Array (browser) or Buffer (node)
+  var buffer = TaskinfoMessage.encode(message).finish();
+
+  // Decode an Uint8Array (browser) or Buffer (node) to a message
+  var decMessage = TaskinfoMessage.decode(buffer);
+
+  console.log(buffer)
+  console.log(message)
+  console.log(decMessage)
+
+}).catch(err => {
+  console.log(err)
+})*/
 
 @connect(({ login, loading }) => ({
   login,
