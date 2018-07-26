@@ -3,6 +3,9 @@ export const api = {
 
   //发布管理
   api_publish_list: '/api/publish/list',
+  api_publish_detail: '/api/publish/detail',
+  api_givehand_list: '/api/givehand/list',
+  api_accepted_list: '/api/accepted/list',
 };
 
 export default {

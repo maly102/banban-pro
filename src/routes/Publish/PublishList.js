@@ -57,17 +57,17 @@ export default class PublishList extends PureComponent {
   };
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    console.log(pagination);
     const { dispatch } = this.props;
     const { formValues } = this.state;
 
     const params = {
       pageIndex: pagination.current,
+      pageSize: pagination.pageSize,
       ...formValues,
     };
 
     dispatch({
-      type: 'publish/fetchPublishLis',
+      type: 'publish/fetchPublishList',
       payload: params,
     });
   };
@@ -124,6 +124,14 @@ export default class PublishList extends PureComponent {
     return this.renderSimpleForm();
   }
 
+  handleShowDetail = (id) => {
+    const {dispatch} = this.props
+    dispatch({
+      type: 'publish/fetchPublishDetail',
+      payload: {id}
+    })
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
@@ -177,9 +185,9 @@ export default class PublishList extends PureComponent {
       },
       {
         title: '操作',
-        render: () => (
+        render: (text, record, index) => (
           <Fragment>
-            <a href="">详情</a>
+            <a onClick={() => this.handleShowDetail(record.id)}>详情</a>
             <Divider type="vertical" />
             <a href="">位置</a>
           </Fragment>

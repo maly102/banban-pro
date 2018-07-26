@@ -92,6 +92,10 @@ export const getRouterData = app => {
     '/publish/publishList': {
       component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishList')),
     },
+    '/publish/publishDetail': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishDetail')),
+      name: '发布详情',
+    },
     '/publish/giveHand': {
       component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/GiveHand')),
     },

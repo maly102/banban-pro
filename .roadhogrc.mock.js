@@ -6,7 +6,7 @@ import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
-import { getFakePublishList } from './mock/publish';
+import { getFakePublishList, getFakePublishDetail, getFakeGiveHandList, getFakeAcceptedList } from './mock/publish';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -139,6 +139,9 @@ const proxy = {
   },
 
   'POST /api/publish/list': getFakePublishList,
+  'POST /api/publish/detail': getFakePublishDetail,
+  'POST /api/givehand/list': getFakeGiveHandList,
+  'POST /api/accepted/list': getFakeAcceptedList
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));
