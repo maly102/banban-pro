@@ -48,7 +48,7 @@ const menuData = [
     children: [
       {
         name: '用户列表',
-        path: 'userList',
+        path: 'clientList',
       },
       {
         name: '审核列表',

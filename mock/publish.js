@@ -6,7 +6,7 @@ for (let i = 0; i < 46; i += 1) {
   fakePublishList.push({
     id: i+1,
     publishNum: i,
-    userCode: i + 10,
+    clientCode: i + 10,
     mobile: '1234567890',
     publishTime: '2018-01-01 12:20',
     helpSt: '2018-01-02 12:20',
@@ -21,9 +21,9 @@ let fakeGiveHandList = [];
 for (let i = 0; i < 50; i += 1) {
   fakeGiveHandList.push({
     id: i+1,
-    userCode: i + 10,
+    clientCode: i + 10,
     mobile: '1234567890',
-    userName: '用户姓名',
+    clientName: '用户姓名',
     relationShip: '父子',
     helpCount: i+3,
     helpCoin: i + 20,
@@ -37,9 +37,9 @@ let fakeAcceptedList = [];
 for (let i = 0; i < 33; i += 1) {
   fakeAcceptedList.push({
     id: i+1,
-    userCode: i + 1,
+    clientCode: i + 1,
     mobile: '1234567890',
-    userName: '用户姓名',
+    clientName: '用户姓名',
     relationShip: '父子',
     acceptCount: i+10,
     helpCoin: i + 20,

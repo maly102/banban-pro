@@ -128,7 +128,7 @@ export default class GiveHand extends PureComponent {
     const columns = [
       {
         title: '用户编号',
-        dataIndex: 'userCode',
+        dataIndex: 'clientCode',
       },
       {
         title: '注册手机',
@@ -136,7 +136,7 @@ export default class GiveHand extends PureComponent {
       },
       {
         title: '用户姓名',
-        dataIndex: 'userName',
+        dataIndex: 'clientName',
       },
       {
         title: '关系',

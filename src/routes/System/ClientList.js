@@ -6,16 +6,14 @@ import { connect } from 'dva';
 import tbStyles from '../List/TableList.less';
 
 const FormItem = Form.Item;
-const { Option } = Select;
 
-@connect(({ publish, loading }) => ({
-  publish,
-  loading: loading.models.publish,
+@connect(({ client, loading }) => ({
+  client,
+  loading: loading.models.client,
 }))
 @Form.create()
-export default class PublishList extends PureComponent {
+export default class ClientList extends PureComponent {
   state = {
-    modalVisible: false,
     selectedRows: [],
     formValues: {},
   };
@@ -37,7 +35,7 @@ export default class PublishList extends PureComponent {
       });
 
       dispatch({
-        type: 'publish/fetchPublishList',
+        type: 'client/fetchClientList',
         payload: values,
       });
     });
@@ -51,7 +49,7 @@ export default class PublishList extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'publish/fetchPublishList',
+      type: 'client/fetchClientList',
       payload: {},
     });
   };
@@ -67,7 +65,7 @@ export default class PublishList extends PureComponent {
     };
 
     dispatch({
-      type: 'publish/fetchPublishList',
+      type: 'client/fetchClientList',
       payload: params,
     });
   };
@@ -79,28 +77,13 @@ export default class PublishList extends PureComponent {
       <Form onSubmit={this.handleSearch} layout="inline">
         <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
           <Col md={5} sm={24}>
-            <FormItem label="发布人">
-              {getFieldDecorator('publisher')(<Input placeholder="发布人" />)}
-            </FormItem>
-          </Col>
-          <Col md={5} sm={24}>
             <FormItem label="手机号">
               {getFieldDecorator('mobile')(<Input placeholder="手机号" />)}
             </FormItem>
           </Col>
           <Col md={5} sm={24}>
-            <FormItem label="发布单号">
-              {getFieldDecorator('publishNum')(<Input placeholder="发布单号" />)}
-            </FormItem>
-          </Col>
-          <Col md={5} sm={24}>
-            <FormItem label="发布状态">
-              {getFieldDecorator('status')(
-                <Select placeholder="发布状态" style={{ width: '100%' }}>
-                  <Option value="0">关闭</Option>
-                  <Option value="1">运行中</Option>
-                </Select>
-              )}
+            <FormItem label="姓名">
+              {getFieldDecorator('clientName')(<Input placeholder="姓名" />)}
             </FormItem>
           </Col>
           <Col md={4} sm={24}>
@@ -126,31 +109,24 @@ export default class PublishList extends PureComponent {
 
   handleShowDetail = (id) => {
     const {dispatch} = this.props
-    dispatch({
-      type: 'publish/fetchPublishDetail',
-      payload: {id}
-    })
+
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'publish/fetchPublishList',
+      type: 'client/fetchClientList',
     });
   }
 
   render() {
     const {
-      publish: { publishList },
+      client: { clientList },
       loading,
     } = this.props;
-    const { selectedRows, modalVisible } = this.state;
+    const { selectedRows } = this.state;
 
     const columns = [
-      {
-        title: '发布单号',
-        dataIndex: 'publishNum',
-      },
       {
         title: '用户编号',
         dataIndex: 'clientCode',
@@ -160,43 +136,41 @@ export default class PublishList extends PureComponent {
         dataIndex: 'mobile',
       },
       {
-        title: '任务生成时间',
-        dataIndex: 'publishTime',
+        title: '注册时间',
+        dataIndex: 'registerTime',
       },
       {
-        title: '帮助开始时间',
-        dataIndex: 'helpSt',
+        title: '是否完善资料',
+        dataIndex: 'isCompleted',
       },
       {
-        title: '帮助结束时间',
-        dataIndex: 'helpEt',
+        title: '姓名',
+        dataIndex: 'clientName',
+      },
+      {
+        title: '关系',
+        dataIndex: 'relationShip',
       },
       {
         title: '助人币',
         dataIndex: 'helpCoin',
       },
       {
-        title: '任务状态',
-        dataIndex: 'status',
-      },
-      {
-        title: '发布类型',
-        dataIndex: 'type',
+        title: '孩子姓名',
+        dataIndex: 'childName',
       },
       {
         title: '操作',
         render: (text, record, index) => (
           <Fragment>
-            <a onClick={() => this.handleShowDetail(record.id)}>详情</a>
-            <Divider type="vertical" />
-            <a href="">位置</a>
+            <a onClick={() => this.handleShowDetail(record.id)}>用户详情</a>
           </Fragment>
         ),
       },
     ];
 
     return (
-      <PageHeaderLayout title="发布列表">
+      <PageHeaderLayout title="用户列表">
         <Card bordered={false}>
           <div className={tbStyles.tableList}>
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>
@@ -204,7 +178,7 @@ export default class PublishList extends PureComponent {
               showSelection="none"
               selectedRows={selectedRows}
               loading={loading}
-              data={publishList}
+              data={clientList}
               columns={columns}
               onChange={this.handleStandardTableChange}
             />
