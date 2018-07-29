@@ -56,7 +56,7 @@ const menuData = [
       },
       {
         name: '拒绝列表',
-        path: 'rejectList',
+        path: 'refuseList',
       },
     ],
   },

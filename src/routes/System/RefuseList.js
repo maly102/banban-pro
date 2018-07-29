@@ -12,7 +12,7 @@ const FormItem = Form.Item;
   loading: loading.models.client,
 }))
 @Form.create()
-export default class CheckList extends PureComponent {
+export default class RejectList extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
@@ -35,7 +35,7 @@ export default class CheckList extends PureComponent {
       });
 
       dispatch({
-        type: 'client/fetchCheckList',
+        type: 'client/fetchRefuseList',
         payload: values,
       });
     });
@@ -49,7 +49,7 @@ export default class CheckList extends PureComponent {
       formValues: {},
     });
     dispatch({
-      type: 'client/fetchCheckList',
+      type: 'client/fetchRefuseList',
       payload: {},
     });
   };
@@ -65,7 +65,7 @@ export default class CheckList extends PureComponent {
     };
 
     dispatch({
-      type: 'client/fetchCheckList',
+      type: 'client/fetchRefuseList',
       payload: params,
     });
   };
@@ -115,13 +115,13 @@ export default class CheckList extends PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'client/fetchCheckList',
+      type: 'client/fetchRefuseList',
     });
   }
 
   render() {
     const {
-      client: { checkList },
+      client: { refuseList },
       loading,
     } = this.props;
     const { selectedRows } = this.state;
@@ -168,9 +168,8 @@ export default class CheckList extends PureComponent {
         ),
       },
     ];
-
     return (
-      <PageHeaderLayout title="审核列表">
+      <PageHeaderLayout title="拒绝列表">
         <Card bordered={false}>
           <div className={tbStyles.tableList}>
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>
@@ -178,7 +177,7 @@ export default class CheckList extends PureComponent {
               showSelection="none"
               selectedRows={selectedRows}
               loading={loading}
-              data={checkList}
+              data={refuseList}
               columns={columns}
               onChange={this.handleStandardTableChange}
             />

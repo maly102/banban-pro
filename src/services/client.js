@@ -7,3 +7,17 @@ export async function queryClientList(params) {
     data: params,
   });
 }
+
+export async function queryCheckList(params) {
+  return request(api.api_check_list, {
+    method: 'POST',
+    data: params,
+  });
+}
+
+export async function queryRefuseList(params) {
+  return request(api.api_refuse_list, {
+    method: 'POST',
+    data: params,
+  });
+}

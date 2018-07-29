@@ -109,12 +109,12 @@ export const getRouterData = app => {
     '/system/checkList': {
       component: dynamicWrapper(app, ['client'], () => import('../routes/System/CheckList')),
     },
-    '/system/rejectList': {
-      component: dynamicWrapper(app, ['client'], () => import('../routes/System/RejectList')),
+    '/system/refuseList': {
+      component: dynamicWrapper(app, ['client'], () => import('../routes/System/RefuseList')),
     },
 
     '/school/schoolList': {
-      component: dynamicWrapper(app, [], () => import('../routes/School/SchoolList')),
+      component: dynamicWrapper(app, ['school'], () => import('../routes/School/SchoolList')),
     },
 
     '/form/basic-form': {

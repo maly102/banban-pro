@@ -8,6 +8,10 @@ export const api = {
   api_accepted_list: '/api/accepted/list',
 
   api_client_list: '/api/client/list',
+  api_check_list: '/api/check/list',
+  api_refuse_list: '/api/refuse/list',
+
+  api_school_list: '/api/school/list',
 };
 
 export default {
