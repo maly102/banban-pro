@@ -1,13 +1,14 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Card, Form, Row, Col, Button, Input, Select, Divider } from 'antd';
-import { connect } from 'dva';
+import {Card, Form, Row, Col, Button, Input, Select, Dropdown} from 'antd';
+import {connect} from 'dva';
+import EditClient from './EditClient';
 import tbStyles from '../List/TableList.less';
 
 const FormItem = Form.Item;
 
-@connect(({ client, loading }) => ({
+@connect(({client, loading}) => ({
   client,
   loading: loading.models.client,
 }))
@@ -16,12 +17,13 @@ export default class ClientList extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
+    popVisible: false,
   };
 
   handleSearch = e => {
     e.preventDefault();
 
-    const { dispatch, form } = this.props;
+    const {dispatch, form} = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -42,7 +44,7 @@ export default class ClientList extends PureComponent {
   };
 
   handleFormReset = () => {
-    const { form, dispatch } = this.props;
+    const {form, dispatch} = this.props;
     form.resetFields();
 
     this.setState({
@@ -55,8 +57,8 @@ export default class ClientList extends PureComponent {
   };
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
+    const {dispatch} = this.props;
+    const {formValues} = this.state;
 
     const params = {
       pageIndex: pagination.current,
@@ -71,19 +73,19 @@ export default class ClientList extends PureComponent {
   };
 
   renderSimpleForm() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
+    const {form} = this.props;
+    const {getFieldDecorator} = form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+        <Row gutter={{md: 8, lg: 24, xl: 48}}>
           <Col md={5} sm={24}>
             <FormItem label="手机号">
-              {getFieldDecorator('mobile')(<Input placeholder="手机号" />)}
+              {getFieldDecorator('mobile')(<Input placeholder="手机号"/>)}
             </FormItem>
           </Col>
           <Col md={5} sm={24}>
             <FormItem label="姓名">
-              {getFieldDecorator('clientName')(<Input placeholder="姓名" />)}
+              {getFieldDecorator('clientName')(<Input placeholder="姓名"/>)}
             </FormItem>
           </Col>
           <Col md={4} sm={24}>
@@ -91,7 +93,7 @@ export default class ClientList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
                 重置
               </Button>
             </span>
@@ -109,11 +111,25 @@ export default class ClientList extends PureComponent {
 
   handleShowDetail = (id) => {
     const {dispatch} = this.props
+    this.setState({
+      popVisible: true
+    });
+  }
 
+  handlePopCancel = () => {
+    this.setState({
+      popVisible: false
+    });
+  }
+
+  handlePopOk = () => {
+    this.setState({
+      popVisible: false
+    });
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'client/fetchClientList',
     });
@@ -121,10 +137,10 @@ export default class ClientList extends PureComponent {
 
   render() {
     const {
-      client: { clientList },
+      client: {clientList},
       loading,
     } = this.props;
-    const { selectedRows } = this.state;
+    const {selectedRows} = this.state;
 
     const columns = [
       {
@@ -183,6 +199,12 @@ export default class ClientList extends PureComponent {
               onChange={this.handleStandardTableChange}
             />
           </div>
+          <EditClient
+            visible={this.state.popVisible}
+            title="用户详情"
+            handleCancel={this.handlePopCancel}
+            handleOk={this.handlePopOk}
+          />
         </Card>
       </PageHeaderLayout>
     );

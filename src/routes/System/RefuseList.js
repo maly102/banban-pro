@@ -54,6 +54,12 @@ export default class RejectList extends PureComponent {
     });
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  }
+
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
     const { dispatch } = this.props;
     const { formValues } = this.state;
@@ -173,12 +179,17 @@ export default class RejectList extends PureComponent {
         <Card bordered={false}>
           <div className={tbStyles.tableList}>
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>
+            <div className={tbStyles.tableListOperator}>
+              <span>
+                <Button type="primary">审核通过</Button>
+              </span>
+            </div>
             <StandardTable
-              showSelection="none"
               selectedRows={selectedRows}
               loading={loading}
               data={refuseList}
               columns={columns}
+              onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />
           </div>

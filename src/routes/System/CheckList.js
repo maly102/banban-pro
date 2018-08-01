@@ -70,6 +70,12 @@ export default class CheckList extends PureComponent {
     });
   };
 
+  handleSelectRows = rows => {
+    this.setState({
+      selectedRows: rows,
+    });
+  }
+
   renderSimpleForm() {
     const { form } = this.props;
     const { getFieldDecorator } = form;
@@ -174,12 +180,18 @@ export default class CheckList extends PureComponent {
         <Card bordered={false}>
           <div className={tbStyles.tableList}>
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>
+            <div className={tbStyles.tableListOperator}>
+              <span>
+                <Button type="primary">审核通过</Button>
+                <Button type="danger">审核不通过</Button>
+              </span>
+            </div>
             <StandardTable
-              showSelection="none"
               selectedRows={selectedRows}
               loading={loading}
               data={checkList}
               columns={columns}
+              onSelectRow={this.handleSelectRows}
               onChange={this.handleStandardTableChange}
             />
           </div>
