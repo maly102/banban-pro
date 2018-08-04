@@ -28,7 +28,7 @@ const menuData = [
     children: [
       {
         name: '发布列表',
-        path: 'publishList',
+        path: 'publishInfo',
       },
       {
         name: '助人列表',
@@ -68,7 +68,7 @@ const menuData = [
     children: [
       {
         name: '校园列表',
-        path: 'schoolList',
+        path: 'schoolInfo',
       },
     ],
   },

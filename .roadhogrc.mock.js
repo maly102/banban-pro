@@ -8,7 +8,7 @@ import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
 import { getFakePublishList, getFakePublishDetail, getFakeGiveHandList, getFakeAcceptedList } from './mock/publish';
 import {getFakeClientList, getFakeCheckList, getFakeRefuseList} from './mock/client';
-import {getFakeSchoolList} from './mock/school';
+import {getFakeSchoolList, getFakeSchoolDetail} from './mock/school';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
@@ -148,6 +148,7 @@ const proxy = {
   'POST /api/check/list': getFakeCheckList,
   'POST /api/refuse/list': getFakeRefuseList,
   'POST /api/school/list': getFakeSchoolList,
+  'POST /api/school/detail': getFakeSchoolDetail
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

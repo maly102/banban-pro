@@ -36,7 +36,7 @@ export default {
           resultDetail: ret.detail,
         });
         yield put(routerRedux.push({
-          pathname: '/publish/publishDetail',
+          pathname: '/publish/publishInfo/detail',
         }))
       }
     },

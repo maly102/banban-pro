@@ -12,6 +12,7 @@ export const api = {
   api_refuse_list: '/api/refuse/list',
 
   api_school_list: '/api/school/list',
+  api_school_detail: '/api/school/detail',
 };
 
 export default {

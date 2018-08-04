@@ -6,11 +6,32 @@ for (let i = 0; i < 21; i += 1) {
     id: i+1,
     schoolCode: i + 20,
     schoolName: '张三',
-    city: '城市',
+    cityName: '城市',
+    cityCode: '1002',
     address: '校园地址',
   });
 }
 
+let fakeSchoolDetail = {
+  id: 1,
+  schoolCode: 20,
+  schoolName: '张三',
+  cityName: '城市',
+  cityCode: 2,
+  districtCode: 21,
+  districtName: '我的区区',
+  address: '校园地址',
+  demand: 1,
+  gradeInfos: [
+    {
+      gradeLevel: '01',
+      classLevel: '02',
+      fileName: 'aaa.txt',
+      fileUrl: 'asdas/qweqw/aaa.txt',
+      gradeOn: 0,
+    }
+  ]
+};
 
 export function getFakeSchoolList(req, res, u, b) {
   const params = (b && b.body) || req.body;
@@ -44,6 +65,21 @@ export function getFakeSchoolList(req, res, u, b) {
   }
 }
 
+export function getFakeSchoolDetail(req, res, u, b) {
+  let result = {
+    code: 1001,
+    message: '',
+    schoolDetail: fakeSchoolDetail
+  }
+
+  if (res && res.json) {
+    res.json(result);
+  } else {
+    return result;
+  }
+}
+
 export default {
-  getFakeSchoolList
+  getFakeSchoolList,
+  getFakeSchoolDetail
 }

@@ -7,3 +7,10 @@ export async function querySchoolList(params) {
     data: params,
   });
 }
+
+export async function querySchoolDetail(params) {
+  return request(api.api_school_detail, {
+    method: 'POST',
+    data: params,
+  });
+}

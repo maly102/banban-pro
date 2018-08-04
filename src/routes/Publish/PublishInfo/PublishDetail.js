@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import FooterToolbar from 'components/FooterToolbar'
 import DescriptionList from 'components/DescriptionList';
 import { routerRedux } from 'dva/router';

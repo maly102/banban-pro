@@ -1,9 +1,9 @@
 import React, { PureComponent, Fragment } from 'react';
 import StandardTable from 'components/StandardTable';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
 import { Card, Form, Row, Col, Button, Input, Select, Divider } from 'antd';
 import { connect } from 'dva';
-import tbStyles from '../List/TableList.less';
+import tbStyles from '../../List/TableList.less';
 
 const FormItem = Form.Item;
 const { Option } = Select;

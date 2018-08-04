@@ -1,13 +1,13 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import StandardTable from 'components/StandardTable';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { Card, Form, Row, Col, Button, Input, Cascader } from 'antd';
-import { connect } from 'dva';
+import {Card, Form, Row, Col, Button, Input, Cascader} from 'antd';
+import {connect} from 'dva';
 import tbStyles from '../List/TableList.less';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 
 const FormItem = Form.Item;
 
-@connect(({ school, loading }) => ({
+@connect(({school, loading}) => ({
   school,
   loading: loading.models.school,
 }))
@@ -21,7 +21,7 @@ export default class SchoolList extends PureComponent {
   handleSearch = e => {
     e.preventDefault();
 
-    const { dispatch, form } = this.props;
+    const {dispatch, form} = this.props;
 
     form.validateFields((err, fieldsValue) => {
       if (err) return;
@@ -42,7 +42,7 @@ export default class SchoolList extends PureComponent {
   };
 
   handleFormReset = () => {
-    const { form, dispatch } = this.props;
+    const {form, dispatch} = this.props;
     form.resetFields();
 
     this.setState({
@@ -55,8 +55,8 @@ export default class SchoolList extends PureComponent {
   };
 
   handleStandardTableChange = (pagination, filtersArg, sorter) => {
-    const { dispatch } = this.props;
-    const { formValues } = this.state;
+    const {dispatch} = this.props;
+    const {formValues} = this.state;
 
     const params = {
       pageIndex: pagination.current,
@@ -71,19 +71,19 @@ export default class SchoolList extends PureComponent {
   };
 
   renderSimpleForm() {
-    const { form } = this.props;
-    const { getFieldDecorator } = form;
+    const {form} = this.props;
+    const {getFieldDecorator} = form;
     return (
       <Form onSubmit={this.handleSearch} layout="inline">
-        <Row gutter={{ md: 8, lg: 24, xl: 48 }}>
+        <Row gutter={{md: 8, lg: 24, xl: 48}}>
           <Col md={5} sm={24}>
             <FormItem label="校园名称">
-              {getFieldDecorator('schoolName')(<Input placeholder="校园名称" />)}
+              {getFieldDecorator('schoolName')(<Input placeholder="校园名称"/>)}
             </FormItem>
           </Col>
           <Col md={5} sm={24}>
             <FormItem label="城市">
-              {getFieldDecorator('city')(<Cascader placeholder="城市" />)}
+              {getFieldDecorator('city')(<Cascader placeholder="城市"/>)}
             </FormItem>
           </Col>
           <Col md={4} sm={24}>
@@ -91,7 +91,7 @@ export default class SchoolList extends PureComponent {
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{ marginLeft: 8 }} onClick={this.handleFormReset}>
+              <Button style={{marginLeft: 8}} onClick={this.handleFormReset}>
                 重置
               </Button>
             </span>
@@ -109,11 +109,16 @@ export default class SchoolList extends PureComponent {
 
   handleShowDetail = (id) => {
     const {dispatch} = this.props
-
+    dispatch({
+      type: 'school/fetchSchoolDetail',
+      payload: {
+        id: id
+      }
+    })
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'school/fetchSchoolList',
     });
@@ -121,10 +126,10 @@ export default class SchoolList extends PureComponent {
 
   render() {
     const {
-      school: { schoolList },
+      school: {schoolList},
       loading,
     } = this.props;
-    const { selectedRows } = this.state;
+    const {selectedRows} = this.state;
 
     const columns = [
       {
@@ -137,7 +142,7 @@ export default class SchoolList extends PureComponent {
       },
       {
         title: '校园城市',
-        dataIndex: 'city',
+        dataIndex: 'cityName',
       },
       {
         title: '校园详细地址',
@@ -148,14 +153,16 @@ export default class SchoolList extends PureComponent {
         title: '操作',
         render: (text, record, index) => (
           <Fragment>
-            <a onClick={() => this.handleShowDetail(record.id)}>用户详情</a>
+            <a onClick={() => this.handleShowDetail(record.id)}>校园详情</a>
           </Fragment>
         ),
       },
     ];
 
     return (
-      <PageHeaderLayout title="校园列表">
+      <PageHeaderLayout
+        title="校园信息"
+      >
         <Card bordered={false}>
           <div className={tbStyles.tableList}>
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>

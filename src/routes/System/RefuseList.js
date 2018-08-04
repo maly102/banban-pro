@@ -4,6 +4,7 @@ import PageHeaderLayout from '../../layouts/PageHeaderLayout';
 import { Card, Form, Row, Col, Button, Input, Select, Divider } from 'antd';
 import { connect } from 'dva';
 import tbStyles from '../List/TableList.less';
+import EditClient from './EditClient';
 
 const FormItem = Form.Item;
 
@@ -16,6 +17,7 @@ export default class RejectList extends PureComponent {
   state = {
     selectedRows: [],
     formValues: {},
+    popVisible: false,
   };
 
   handleSearch = e => {
@@ -114,7 +116,25 @@ export default class RejectList extends PureComponent {
   }
 
   handleShowDetail = (id) => {
-    const {dispatch} = this.props
+    const {dispatch} = this.props;
+    this.setState({
+      popVisible: true
+    });
+  }
+
+  handlePopCancel = () => {
+    this.setState({
+      popVisible: false
+    });
+  }
+
+  handlePopOk = () => {
+    this.setState({
+      popVisible: false
+    });
+  }
+
+  handlePass = () => {
 
   }
 
@@ -181,7 +201,7 @@ export default class RejectList extends PureComponent {
             <div className={tbStyles.tableListForm}>{this.renderForm()}</div>
             <div className={tbStyles.tableListOperator}>
               <span>
-                <Button type="primary">审核通过</Button>
+                <Button type="primary" onClick={this.handlePass}>审核通过</Button>
               </span>
             </div>
             <StandardTable
@@ -193,6 +213,12 @@ export default class RejectList extends PureComponent {
               onChange={this.handleStandardTableChange}
             />
           </div>
+          <EditClient
+            visible={this.state.popVisible}
+            title="用户详情"
+            handleCancel={this.handlePopCancel}
+            handleOk={this.handlePopOk}
+          />
         </Card>
       </PageHeaderLayout>
     );

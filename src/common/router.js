@@ -89,11 +89,15 @@ export const getRouterData = app => {
       // authority: 'admin',
     },
 
-    '/publish/publishList': {
-      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishList')),
+    '/publish/publishInfo': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishInfo')),
     },
-    '/publish/publishDetail': {
-      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishDetail')),
+    '/publish/publishInfo/list': {
+      name: '发布列表',
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishInfo/PublishList')),
+    },
+    '/publish/publishInfo/detail': {
+      component: dynamicWrapper(app, ['publish'], () => import('../routes/Publish/PublishInfo/PublishDetail')),
       name: '发布详情',
     },
     '/publish/giveHand': {
@@ -113,8 +117,16 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['client'], () => import('../routes/System/RefuseList')),
     },
 
-    '/school/schoolList': {
+    '/school/schoolInfo': {
+      component: dynamicWrapper(app, ['school'], () => import('../routes/School')),
+    },
+    '/school/schoolInfo/list': {
+      name: '校园列表',
       component: dynamicWrapper(app, ['school'], () => import('../routes/School/SchoolList')),
+    },
+    '/school/schoolInfo/detail': {
+      name: '校园详情',
+      component: dynamicWrapper(app, ['school'], () => import('../routes/School/SchoolDetail')),
     },
 
     '/form/basic-form': {
