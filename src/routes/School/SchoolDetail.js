@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import FooterToolbar from 'components/FooterToolbar'
 import {Card, Form, Cascader, Row, Col, Button, Input, Radio} from 'antd';
 import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import styles from './SchoolDetail.less';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -37,9 +38,29 @@ const options = [{
 }))
 @Form.create()
 export default class SchoolDetail extends PureComponent {
+  state = {
+    classList: []
+  };
+
   handleSubmit = () => {}
+
+  handleAddClassInfo = () => {
+    let clsList = this.state.classList.concat([]);
+    clsList.push(
+      <Row style={{marginTop: '24px'}}>
+        <Col xs={0} sm={4} md={4} lg={4} xl={4}></Col>
+        <Col xs={24} sm={12} md={12} lg={12} xl={12} className={styles.schoolClassBox}>
+        </Col>
+      </Row>
+    );
+    this.setState({
+      classList: clsList
+    })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
+    const {classList} = this.state;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -107,11 +128,14 @@ export default class SchoolDetail extends PureComponent {
                 )}
               </FormItem>
             </Form>
+            {classList}
+            <Row style={{marginTop: '24px'}}>
+              <Col xs={0} sm={4} md={4} lg={4} xl={4}></Col>
+              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                <Button onClick={this.handleAddClassInfo}>添加年级班级</Button>
+              </Col>
+            </Row>
           </div>
-
-          <FooterToolbar>
-            <Button>提交</Button>
-          </FooterToolbar>
         </Card>
       </PageHeaderLayout>
     );
