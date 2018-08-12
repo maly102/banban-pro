@@ -178,84 +178,71 @@ export default class Workplace extends PureComponent {
     return (
       <PageHeaderLayout content={pageHeaderContent} extraContent={extraContent}>
         <Row gutter={24}>
-          <Col xl={16} lg={24} md={24} sm={24} xs={24}>
+          <Col xl={24} lg={24} md={24} sm={24} xs={24}>
             <Card
               className={styles.projectList}
               style={{ marginBottom: 24 }}
-              title="进行中的项目"
+              title="任务详情"
               bordered={false}
-              extra={<Link to="/">全部项目</Link>}
               loading={projectLoading}
               bodyStyle={{ padding: 0 }}
             >
-              {notice.map(item => (
-                <Card.Grid className={styles.projectGrid} key={item.id}>
-                  <Card bodyStyle={{ padding: 0 }} bordered={false}>
-                    <Card.Meta
-                      title={
-                        <div className={styles.cardTitle}>
-                          <Avatar size="small" src={item.logo} />
-                          <Link to={item.href}>{item.title}</Link>
-                        </div>
-                      }
-                      description={item.description}
-                    />
-                    <div className={styles.projectItemContent}>
-                      <Link to={item.memberLink}>{item.member || ''}</Link>
-                      {item.updatedAt && (
-                        <span className={styles.datetime} title={item.updatedAt}>
-                          {moment(item.updatedAt).fromNow()}
-                        </span>
-                      )}
-                    </div>
-                  </Card>
-                </Card.Grid>
-              ))}
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="今日发布"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="已接发布任务"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="未接发布任务"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
             </Card>
             <Card
-              bodyStyle={{ padding: 0 }}
+              className={styles.projectList}
+              title="用户总览"
               bordered={false}
-              className={styles.activeCard}
-              title="动态"
-              loading={activitiesLoading}
-            >
-              <List loading={activitiesLoading} size="large">
-                <div className={styles.activitiesList}>{this.renderActivities()}</div>
-              </List>
-            </Card>
-          </Col>
-          <Col xl={8} lg={24} md={24} sm={24} xs={24}>
-            <Card
-              style={{ marginBottom: 24 }}
-              title="快速开始 / 便捷导航"
-              bordered={false}
+              loading={projectLoading}
               bodyStyle={{ padding: 0 }}
             >
-              <EditableLinkGroup onAdd={() => {}} links={links} linkElement={Link} />
-            </Card>
-            <Card
-              style={{ marginBottom: 24 }}
-              bordered={false}
-              title="XX 指数"
-              loading={radarData.length === 0}
-            >
-              <div className={styles.chart}>
-                <Radar hasLegend height={343} data={radarData} />
-              </div>
-            </Card>
-            <Card bodyStyle={{ paddingTop: 12, paddingBottom: 12 }} bordered={false} title="团队">
-              <div className={styles.members}>
-                <Row gutter={48}>
-                  {members.map(item => (
-                    <Col span={12} key={`members-item-${item.id}`}>
-                      <Link to={item.link}>
-                        <Avatar src={item.logo} size="small" />
-                        <span className={styles.member}>{item.title}</span>
-                      </Link>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="今日新增"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="昨日新增"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
+              <Card.Grid className={styles.projectGrid}>
+                <Card bodyStyle={{ padding: 0 }} bordered={false}>
+                  <Card.Meta
+                    title="总用户数"
+                    description="111"
+                  />
+                </Card>
+              </Card.Grid>
             </Card>
           </Col>
         </Row>

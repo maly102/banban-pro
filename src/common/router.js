@@ -129,6 +129,10 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['school'], () => import('../routes/School/SchoolDetail')),
     },
 
+    '/promotion/banner': {
+      component: dynamicWrapper(app, ['promotion'], () => import('../routes/Promotion/banner')),
+    },
+
     '/form/basic-form': {
       component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
     },
