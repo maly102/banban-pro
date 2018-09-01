@@ -1,9 +1,46 @@
 import React, { PureComponent, Fragment } from 'react';
 import StandardTable from 'components/StandardTable';
 import PageHeaderLayout from '../../../layouts/PageHeaderLayout';
-import { Card, Form, Row, Col, Button, Input, Select, Divider } from 'antd';
+import { Card, Form, Row, Col, Button, Input, Select, Divider, Modal } from 'antd';
 import { connect } from 'dva';
 import tbStyles from '../../List/TableList.less';
+import AMap from '../../../components/AMap';
+
+const markers = [
+  {
+    position: {
+      longitude: 120.245897,
+      latitude: 30.135191,
+    },
+  },
+  {
+    position: {
+      longitude: 120.247313,
+      latitude: 30.138012,
+    },
+  },
+  {
+    position: {
+      longitude: 120.24873,
+      latitude: 30.141872,
+    },
+  },
+];
+
+const polyPath = [
+  {
+    longitude: 120.245897,
+    latitude: 30.135191,
+  },
+  {
+    longitude: 120.247313,
+    latitude: 30.138012,
+  },
+  {
+    longitude: 120.24873,
+    latitude: 30.141872,
+  },
+];
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -124,13 +161,31 @@ export default class PublishList extends PureComponent {
     return this.renderSimpleForm();
   }
 
-  handleShowDetail = (id) => {
-    const {dispatch} = this.props
+  handleShowDetail = id => {
+    const { dispatch } = this.props;
     dispatch({
       type: 'publish/fetchPublishDetail',
-      payload: {id}
-    })
-  }
+      payload: { id },
+    });
+  };
+
+  handleShowPos = id => {
+    this.setState({
+      modalVisible: true,
+    });
+  };
+
+  handleModalOk = e => {
+    this.setState({
+      modalVisible: false,
+    });
+  };
+
+  handleModalCancel = e => {
+    this.setState({
+      modalVisible: false,
+    });
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
@@ -189,7 +244,7 @@ export default class PublishList extends PureComponent {
           <Fragment>
             <a onClick={() => this.handleShowDetail(record.id)}>详情</a>
             <Divider type="vertical" />
-            <a href="">位置</a>
+            <a onClick={() => this.handleShowPos(record.id)}>位置</a>
           </Fragment>
         ),
       },
@@ -210,6 +265,17 @@ export default class PublishList extends PureComponent {
             />
           </div>
         </Card>
+        <Modal
+          title="位置坐标"
+          visible={modalVisible}
+          onOk={this.handleModalOk}
+          onCancel={this.handleModalCancel}
+          width={1000}
+        >
+          <div style={{ width: '100%', height: '650px' }}>
+            <AMap markers={markers} polyPath={polyPath} />
+          </div>
+        </Modal>
       </PageHeaderLayout>
     );
   }
