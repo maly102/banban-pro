@@ -1,4 +1,4 @@
 export default {
-  mockHost: '',
-  repositoryId: 0
-}
+  host: '',
+  commonParam: 'format=json',
+};

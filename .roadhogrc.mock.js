@@ -6,12 +6,34 @@ import { getProfileBasicData } from './mock/profile';
 import { getProfileAdvancedData } from './mock/profile';
 import { getNotices } from './mock/notices';
 import { format, delay } from 'roadhog-api-doc';
-import { getFakePublishList, getFakePublishDetail, getFakeGiveHandList, getFakeAcceptedList } from './mock/publish';
-import {getFakeClientList, getFakeCheckList, getFakeRefuseList} from './mock/client';
-import {getFakeSchoolList, getFakeSchoolDetail} from './mock/school';
+import {
+  getFakePublishList,
+  getFakePublishDetail,
+  getFakeGiveHandList,
+  getFakeAcceptedList,
+} from './mock/publish';
+import { getFakeClientList, getFakeCheckList, getFakeRefuseList } from './mock/client';
+import { getFakeSchoolList, getFakeSchoolDetail } from './mock/school';
 
 // 是否禁用代理
 const noProxy = process.env.NO_PROXY === 'true';
+
+const UserInfo = {
+  phone: '1231212312',
+  nick: 'nick',
+  desc: 'desc',
+  face: 'face',
+  pass: 'pass',
+  childname: 'childname',
+  name: 'name',
+  type: 1,
+  friendname: 'friendname',
+  state: 0,
+  schoolid: 1111,
+  classesid: 111,
+  levelid: 1,
+  manager: 2,
+};
 
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 const proxy = {
@@ -74,29 +96,20 @@ const proxy = {
   'GET /api/fake_chart_data': getFakeChartData,
   'GET /api/profile/basic': getProfileBasicData,
   'GET /api/profile/advanced': getProfileAdvancedData,
-  'POST /api/login/account': (req, res) => {
+  'POST /webApi/LoginReq': (req, res) => {
     const { password, userName, type } = req.body;
-    console.log(req.body);
-    if (password === '888888' && userName === 'admin') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'admin',
-      });
-      return;
-    }
-    if (password === '123456' && userName === 'user') {
-      res.send({
-        status: 'ok',
-        type,
-        currentAuthority: 'user',
-      });
-      return;
-    }
     res.send({
-      status: 'error',
-      type,
-      currentAuthority: 'guest',
+      HttpPubParaResp: {
+        ret: 0,
+        errmsg: '',
+        privatepara: '',
+      },
+      privatepara: {
+        LoginResp: {
+          UserInfo: UserInfo,
+          sid: '1231',
+        },
+      },
     });
   },
   'POST /api/register': (req, res) => {
@@ -148,7 +161,7 @@ const proxy = {
   'POST /api/check/list': getFakeCheckList,
   'POST /api/refuse/list': getFakeRefuseList,
   'POST /api/school/list': getFakeSchoolList,
-  'POST /api/school/detail': getFakeSchoolDetail
+  'POST /api/school/detail': getFakeSchoolDetail,
 };
 
 export default (noProxy ? {} : delay(proxy, 1000));

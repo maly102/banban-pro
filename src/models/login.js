@@ -1,9 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import { fakeAccountLogin } from '../services/api';
+import { accountLogin } from '../services/api';
 import { setAuthority } from '../utils/authority';
 import { reloadAuthorized } from '../utils/Authorized';
 import { getPageQuery } from '../utils/utils';
+import { clearStoreItems, storeUserInfo, storeSid } from '../utils/localstore';
 
 export default {
   namespace: 'login',
@@ -14,9 +15,40 @@ export default {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
-      console.log(response)
-      yield put({
+      const response = yield call(accountLogin, payload);
+      if (response.LoginResp) {
+        let userInfo = response.LoginResp.UserInfo;
+        let sid = response.LoginResp.sid;
+
+        storeUserInfo(userInfo);
+        storeSid(sid);
+
+        yield put({
+          type: 'changeLoginStatus',
+          payload: {
+            currentAuthority: 'admin',
+          },
+        });
+
+        reloadAuthorized();
+        const urlParams = new URL(window.location.href);
+        const params = getPageQuery();
+        let { redirect } = params;
+        if (redirect) {
+          const redirectUrlParams = new URL(redirect);
+          if (redirectUrlParams.origin === urlParams.origin) {
+            redirect = redirect.substr(urlParams.origin.length);
+            if (redirect.startsWith('/#')) {
+              redirect = redirect.substr(2);
+            }
+          } else {
+            window.location.href = redirect;
+            return;
+          }
+        }
+        yield put(routerRedux.replace(redirect || '/'));
+      }
+      /*yield put({
         type: 'changeLoginStatus',
         payload: response,
       });
@@ -39,7 +71,7 @@ export default {
           }
         }
         yield put(routerRedux.replace(redirect || '/'));
-      }
+      }*/
     },
     *logout(_, { put }) {
       yield put({
@@ -66,8 +98,8 @@ export default {
       setAuthority(payload.currentAuthority);
       return {
         ...state,
-        status: payload.status,
-        type: payload.type,
+        status: true,
+        type: 'account',
       };
     },
   },

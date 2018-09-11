@@ -1,12 +1,13 @@
+//import fetch from 'dva/fetch';
 import axios from 'axios';
 import { message, notification } from 'antd';
 import { routerRedux } from 'dva/router';
-import fileSaver from 'file-saver';
 import store from '../index';
-import Constanst from './config';
+import fileSaver from 'file-saver';
+import { getPageId } from './utils';
 import envConfig from '../envConfig';
 
-let hideUpdating;
+let hideUpdating = undefined;
 
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -14,7 +15,7 @@ const codeMessage = {
   202: '一个请求已经进入后台排队（异步任务）。',
   204: '删除数据成功。',
   400: '发出的请求有错误，服务器没有进行新建或修改数据的操作。',
-  401: '用户没有权限（令牌、用户名、密码错误）。',
+  401: '用户没有权限（令牌、用户名、密码错误），请重新登录。',
   403: '用户得到授权，但是访问是被禁止的。',
   404: '发出的请求针对的是不存在的记录，服务器没有进行操作。',
   406: '请求的格式不可得。',
@@ -28,16 +29,15 @@ const codeMessage = {
 
 function handleError(err) {
   if (err.response) {
-    const response = err.response;
-    const resMsg = response.data ? response.data.message : '';
-
-    const errortext = resMsg || codeMessage[response.status];
+    let response = err.response;
+    let resMsg = response.data ? response.data.message : '';
+    const errortext = codeMessage[response.status] || resMsg;
     notification.error({
-      message: `请求错误 ${response.status}: ${response.url}`,
+      message: `请求错误 ${response.status}`,
       description: errortext,
     });
 
-    const status = response.status;
+    let status = response.status;
     const { dispatch } = store;
     if (status === 401) {
       dispatch(routerRedux.push('/user/login'));
@@ -61,72 +61,15 @@ function handleError(err) {
   }
 }
 
-// 获得token
-function getToken() {
-  return sessionStorage.getItem(Constanst.tokenKey);
-}
-
-// 获得companyID
-function getCompanyId() {
-  const userInfo = sessionStorage.getItem(Constanst.userKey);
-  if (userInfo) {
-    const user = JSON.parse(userInfo);
-    return user.companyId;
-  }
-  return '';
-}
-
-// 获得UserId
-function getUserId() {
-  const userInfo = sessionStorage.getItem(Constanst.userKey);
-  if (userInfo) {
-    const user = JSON.parse(userInfo);
-    return user.id;
-  }
-  return '';
-}
-
-// 获得User Role
-function getUserRoleId() {
-  const userInfo = sessionStorage.getItem(Constanst.userKey);
-  if (userInfo) {
-    const user = JSON.parse(userInfo);
-    return user.userRoleId;
-  }
-  return '';
-}
-
-// 获得employeeID
-function getEmployeeId() {
-  const userInfo = sessionStorage.getItem(Constanst.userKey);
-  if (userInfo) {
-    const user = JSON.parse(userInfo);
-    return user.employeeId;
-  }
-  return '';
-}
-
-// 获得PageId
-function getCurrentPageId() {
-  let pathKey = window.location.hash;
-  if (pathKey) {
-    if (pathKey.indexOf('#') >= 0) {
-      pathKey = pathKey.substr(1, pathKey.length - 1);
-    }
-  }
-  return '';
-}
-
-// 共通请求头部
+//共通请求头部
 function requestHeader(options) {
   const defaultOptions = {
     credentials: 'include',
   };
   const newOptions = { ...defaultOptions, ...options };
-  const token = getToken();
   newOptions.headers = {
     Accept: 'application/json',
-    /*authorization: token ? `Bearer ${  token}` : '',
+    /*authorization: token ? 'Bearer ' + token : '',
     'x-pagination-size':
       options && options.pageSize ? options.pageSize : Constanst.pageSize,
     'x-plat-type': options && options.platType ? options.platType : '',
@@ -136,9 +79,9 @@ function requestHeader(options) {
     'x-employee-id': getEmployeeId(),
     'x-page-id': 15,
     'x-user-id': getUserId(),
-    'x-role-id': getUserRoleId(),*/
-    'x-pagination-size': options && options.pageSize ? options.pageSize : Constanst.pageSize,
-    'x-pagination-index': options && options.pageIndex ? options.pageIndex - 1 : 1,
+    'x-role-id': getUserRoleId(),
+    'x-pagination-index':
+      options && options.pageIndex ? options.pageIndex - 1 : '',*/
     ...newOptions.headers,
   };
 
@@ -153,7 +96,7 @@ function requestHeader(options) {
   return newOptions;
 }
 
-// 获取form value
+//获取form value
 function getFormDataValue(fValue) {
   if (fValue === undefined || fValue === null) {
     return '';
@@ -162,12 +105,9 @@ function getFormDataValue(fValue) {
   }
 }
 
-// 根据环境URL格式化
+//根据环境URL格式化
 function formatUrl(url) {
-  if (envConfig.mockHost) {
-    return envConfig.mockHost + envConfig.repositoryId + url;
-  }
-  return url;
+  return envConfig.host + url + '?' + envConfig.commonParam;
 }
 
 /**
@@ -178,10 +118,7 @@ function formatUrl(url) {
  * @return {object}           An object containing either "data" or "err"
  */
 export default function request(url, options) {
-  const newOptions = requestHeader(options);
-  if (!newOptions.data && newOptions.body) {
-    newOptions.data = newOptions.body;
-  }
+  let newOptions = requestHeader(options);
   return axios(formatUrl(url), newOptions)
     .then(response => {
       if (newOptions.method && newOptions.method.toUpperCase() === 'HEAD') {
@@ -192,13 +129,13 @@ export default function request(url, options) {
       ) {
         return { success: true };
       }
-      const res = response.data;
-      if (res && res.code > 0) {
-        return res;
-      } else if (res.message) {
-        message.error(res.message);
+      let res = response.data;
+      if (res && res.HttpPubParaResp.ret === 0) {
+        return res.privatepara;
+      } else if (res.HttpPubParaResp.errmsg) {
+        message.error(res.HttpPubParaResp.errmsg);
       } else {
-        return res;
+        return res.privatepara;
       }
     })
     .catch(handleError);
@@ -209,7 +146,7 @@ export default function request(url, options) {
  *
  */
 export function upload(url, options) {
-  const formParam = new FormData();
+  let formParam = new FormData();
   if (options.files && options.files.length > 0) {
     // eslint-disable-next-line
     options.files.map(file => {
@@ -226,7 +163,7 @@ export function upload(url, options) {
   }
 
   if (options.data) {
-    const keys = Object.keys(options.data);
+    let keys = Object.keys(options.data);
     if (keys && keys.length > 0) {
       keys.map(key => {
         return formParam.append(key, getFormDataValue(options.data[key]));
@@ -235,9 +172,9 @@ export function upload(url, options) {
   }
   options.data = formParam;
   options.method = 'POST';
-  const newOptions = requestHeader(options);
-  newOptions.onUploadProgress = ({ total, loaded }) => {
-    const percent = Math.round((loaded / total) * 100).toFixed(0);
+  let newOptions = requestHeader(options);
+  newOptions['onUploadProgress'] = ({ total, loaded }) => {
+    let percent = Math.round((loaded / total) * 100).toFixed(0);
     if (!hideUpdating) {
       hideUpdating = message.loading(`正在处理上传文件...`, 0);
     }
@@ -248,7 +185,7 @@ export function upload(url, options) {
 
   return axios(formatUrl(url), newOptions)
     .then(response => {
-      const res = response.data;
+      let res = response.data;
       if (res && res.code > 0) {
         if (typeof newOptions.onSuccess === 'function') {
           if (hideUpdating) {
@@ -257,12 +194,14 @@ export function upload(url, options) {
           }
           newOptions.onSuccess(res);
         }
-      } else if (typeof newOptions.onError === 'function') {
-        if (hideUpdating) {
-          hideUpdating();
-          hideUpdating = undefined;
+      } else {
+        if (typeof newOptions.onError === 'function') {
+          if (hideUpdating) {
+            hideUpdating();
+            hideUpdating = undefined;
+          }
+          newOptions.onError(res);
         }
-        newOptions.onError(res);
       }
       return res;
     })
@@ -282,9 +221,9 @@ export function upload(url, options) {
  *
  */
 export function download(url, options) {
-  const newOptions = requestHeader(options);
-  newOptions.headers.Accept = 'application/octet-stream';
-  newOptions.responseType = 'blob';
+  let newOptions = requestHeader(options);
+  newOptions.headers['Accept'] = 'application/octet-stream';
+  newOptions['responseType'] = 'blob';
   return axios(formatUrl(url), newOptions)
     .then(res => {
       if (newOptions.method && newOptions.method.toUpperCase() === 'HEAD') {
@@ -294,13 +233,14 @@ export function download(url, options) {
           message.error(res.data.message);
           return undefined;
         }
-        // 做成下载文件并下载
-        const blob = res.data;
-        const contentDisposition = res.headers['content-disposition'];
-        const filename = decodeURI(
+        //做成下载文件并下载
+        let blob = res.data;
+        let contentDisposition = res.headers['content-disposition'];
+        let filename = decodeURI(
           /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition)[1]
         );
         fileSaver.saveAs(blob, filename);
+        return res;
       }
     })
     .catch(e => {

@@ -8,12 +8,12 @@ import '../../protobuf/taskinfo_pb';
 
 const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
 
-var test = new proto.taskinfopackage.TaskinfoMessage();
+/*var test = new proto.taskinfopackage.TaskinfoMessage();
 test.setTaskfiled('12312');
 var str = test.serializeBinary();
 
 var data = proto.taskinfopackage.TaskinfoMessage.deserializeBinary(str);
-console.log(data.getTaskfiled())
+console.log(data.getTaskfiled())*/
 
 /*ProtoBuf.load(require('../../protobuf/taskinfo.proto')).then((root) => {
   // Obtain a message type
@@ -89,13 +89,13 @@ export default class LoginPage extends Component {
     return (
       <div className={styles.main}>
         <Login defaultActiveKey={type} onTabChange={this.onTabChange} onSubmit={this.handleSubmit}>
-          <Tab key="account" tab="账户密码登录">
+          <Tab key="account" tab="登录">
             {login.status === 'error' &&
               login.type === 'account' &&
               !submitting &&
               this.renderMessage('账户或密码错误（admin/888888）')}
-            <UserName name="userName" placeholder="admin/user" />
-            <Password name="password" placeholder="888888/123456" />
+            <Mobile name="phoneNum" placeholder="手机号" />
+            <Password name="passWord" placeholder="密码" />
           </Tab>
           {/*<Tab key="mobile" tab="手机号登录">
             {login.status === 'error' &&
@@ -114,7 +114,6 @@ export default class LoginPage extends Component {
             </a>
           </div>
           <Submit loading={submitting}>登录</Submit>
-
         </Login>
       </div>
     );

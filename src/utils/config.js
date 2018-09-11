@@ -1,5 +1,5 @@
 export const api = {
-  api_system_login: '/api/system/login',
+  api_system_login: '/webApi/LoginReq',
 
   //发布管理
   api_publish_list: '/api/publish/list',
@@ -17,6 +17,9 @@ export const api = {
 
 export default {
   pageSize: 10,
+
+  userKey: 'bb-user',
+  sidKey: 'bb-sid',
 
   socketHost: '',
 };
