@@ -22,7 +22,7 @@ const UserInfo = {
   phone: '1231212312',
   nick: 'nick',
   desc: 'desc',
-  face: 'face',
+  face: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1537292441578&di=e4f8c67497c2ccb87b55502229979cee&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201509%2F28%2F20150928101444_FMauR.jpeg',
   pass: 'pass',
   childname: 'childname',
   name: 'name',

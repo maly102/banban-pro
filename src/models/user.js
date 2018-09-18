@@ -1,4 +1,5 @@
 import { query as queryUsers, queryCurrent } from '../services/user';
+import {getUserInfo} from '../utils/localstore';
 
 export default {
   namespace: 'user',
@@ -17,10 +18,15 @@ export default {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+      /*const response = yield call(queryCurrent);*/
+      let userInfo = getUserInfo()
+
       yield put({
         type: 'saveCurrentUser',
-        payload: response,
+        payload: {
+          name: userInfo.nick,
+          avatar: userInfo.face
+        },
       });
     },
   },
